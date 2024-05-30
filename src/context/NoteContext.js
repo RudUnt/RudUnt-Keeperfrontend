@@ -3,7 +3,7 @@ import { UserContext } from "./UserContext";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-// const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = process.env.REACT_APP_API_URL;
 
 // Create context
 const NotesContext = createContext();
@@ -20,7 +20,7 @@ function NotesProvider({ children }) {
     // Before sending a request to a protected route
     const token = Cookies.get("token"); // getting token from cookie of react app
     const headers = token ? { Authorization: `Bearer ${token}` } : {}; // if token is present in the cookie of react app then take token with request to the server, such that server checks corresponding token exist or not for authentication
-    const url = "http://localhost:5000/api/protected/note/get";
+    const url = `${apiUrl}/protected/note/get`;
     axios
       .post(url, userDetailsContext, { headers })
       .then(function (response) {
