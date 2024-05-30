@@ -10,6 +10,8 @@ import { NotesContext } from "../context/NoteContext.js";
 import axios from "axios";
 import Cookies from "js-cookie";
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 function Home() {
   // const [notes, setNotes] = useState([]);
   const { userDetailsContext } = useContext(UserContext);
@@ -27,7 +29,7 @@ function Home() {
       const note = [userDetailsContext.user_id, note_title, note_content, note_date];
       const token = Cookies.get("token"); // getting token from cookie of react app
       const headers = token ? { Authorization: `Bearer ${token}` } : {}; // if token is present in the cookie of react app then take token with request to the server, such that server checks corresponding token exist or not for authentication
-      const url = "http://localhost:5000/api/protected/note/set";
+      const url = `${apiUrl}/protected/note/set`;
       axios
         .post(url, note, { headers })
         .then(function (response) {
@@ -55,7 +57,7 @@ function Home() {
     const deleteNoteDetail = [userDetailsContext.user_id, id];
     const token = Cookies.get("token"); // getting token from cookie of react app
     const headers = token ? { Authorization: `Bearer ${token}` } : {}; // if token is present in the cookie of react app then take token with request to the server, such that server checks corresponding token exist or not for authentication
-    const url = "http://localhost:5000/api/protected/note/delete";
+    const url = `${apiUrl}/protected/note/delete`;
     axios
       .post(url, deleteNoteDetail, { headers })
       .then(function (response) {

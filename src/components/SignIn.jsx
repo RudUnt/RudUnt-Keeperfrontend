@@ -6,7 +6,7 @@ import axios from "axios";
 import { UserContext } from "../context/UserContext.js";
 import Cookies from "js-cookie";
 
-
+const apiUrl = process.env.REACT_APP_API_URL;
 
 function Login() {
     const customCssCA = {
@@ -50,7 +50,7 @@ function Login() {
   function handleSubmit(event) {
     event.preventDefault();
     axios
-      .post("http://localhost:5000/api/login", userDetails)
+      .post(`${apiUrl}/login`, userDetails)
       .then((response) => {
         if (response.status === 200) {
           console.log(response);

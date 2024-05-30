@@ -4,6 +4,8 @@ import Form from "react-bootstrap/Form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 function Signup(props) {
   const customCssSU = {
     backgroundColor: "#4D869C",
@@ -46,7 +48,7 @@ function Signup(props) {
   function handleSubmit(event) {
     event.preventDefault();
     axios
-      .post("http://localhost:5000/api/register", userDetails)
+      .post(`${apiUrl}/register`, userDetails)
       .then((response) => {
         if (response.status === 200) {
           navigate("/");

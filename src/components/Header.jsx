@@ -6,6 +6,8 @@ import { UserContext } from "../context/UserContext";
 import { NotesContext } from "../context/NoteContext";
 import axios from "axios";
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 function Header(props) {
   // const navigate = useNavigate();
   const { userDetailsContext } = useContext(UserContext);
@@ -24,7 +26,7 @@ function Header(props) {
     const details = [userDetailsContext.user_id, date];
     const token = Cookies.get("token"); // getting token from cookie of react app
     const headers = token ? { Authorization: `Bearer ${token}` } : {}; // if token is present in the cookie of react app then take token with request to the server, such that server checks corresponding token exist or not for authentication
-    const url = "http://localhost:5000/api/protected/note/getnotebydate";
+    const url = `${apiUrl}/protected/note/getnotebydate`;
     axios
       .post(url, details, { headers })
       .then(function (response) {
