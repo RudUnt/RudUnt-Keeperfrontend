@@ -58,10 +58,11 @@ function Login() {
           const token = response.data.token;//fetching token value from the response given by the server
           Cookies.set('token', token, {expires: 1, path: '/'})// Cookie expires in 1 day and setting token to the cookies of react app
           setUserDetailsContext(response.data.user);
-          window.location.reload()
+          window.location.reload();
           // navigate('/',{replace: true});
           // navigate("/home"); 
         } else {
+          alert("Something wrong")
           navigate("/login");
         }
       })
@@ -73,8 +74,8 @@ function Login() {
             password: ""
           });
         } else {
-          alert("Plz try again");
-          console.log(err);
+          alert("You are not registered, Plz create your account.");
+          navigate("/signup");
         }
       });
 
