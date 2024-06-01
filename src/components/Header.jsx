@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import HighlightIcon from "@mui/icons-material/Highlight";
+import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import LogoutIcon from "@mui/icons-material/Logout";
 import Cookies from "js-cookie";
 import { UserContext } from "../context/UserContext";
@@ -84,8 +84,8 @@ function Header(props) {
         <div className="header-grid-container">
           <div className="header-grid-item1">
             <h3>
-              <HighlightIcon />
-              Keeper
+              <EmojiObjectsIcon style={{fontSize: "1.1em"}}/>
+              NE
             </h3>
           </div>
           <div className="header-grid-item2">
