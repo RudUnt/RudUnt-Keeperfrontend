@@ -5,23 +5,25 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../context/UserContext.js";
 import Cookies from "js-cookie";
+import DialogBox from "./DialogBox.jsx";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
 function Login() {
-    const customCssCA = {
-        backgroundColor: "#7AB2B2",
-        borderColor: "#CDE8E5",
-        color: "#CDE8E5"
-    }
+  const [dialogBox, setDialogBox] = useState({});
+  const customCssCA = {
+    backgroundColor: "#7AB2B2",
+    borderColor: "#CDE8E5",
+    color: "#CDE8E5",
+  };
 
-    const customCssLI = {
-        backgroundColor: "#4D869C",
-        // borderColor: "#CDE8E5",
-        color: "#CDE8E5"
-    }
+  const customCssLI = {
+    backgroundColor: "#4D869C",
+    // borderColor: "#CDE8E5",
+    color: "#CDE8E5",
+  };
 
-  const { setUserDetailsContext } = useContext(UserContext); 
+  const { setUserDetailsContext } = useContext(UserContext);
 
   const [userDetails, setUserDetails] = useState({
     username: "",
@@ -55,39 +57,73 @@ function Login() {
         if (response.status === 200) {
           console.log(response);
           // After successful login
-          const token = response.data.token;//fetching token value from the response given by the server
-          Cookies.set('token', token, {expires: 1, path: '/'})// Cookie expires in 1 day and setting token to the cookies of react app
+          const token = response.data.token; //fetching token value from the response given by the server
+          Cookies.set("token", token, { expires: 1, path: "/" }); // Cookie expires in 1 day and setting token to the cookies of react app
           setUserDetailsContext(response.data.user);
           window.location.reload();
           // navigate('/',{replace: true});
-          // navigate("/home"); 
+          // navigate("/home");
         } else {
-          alert("Something wrong")
+          alert("Something wrong");
           navigate("/login");
         }
       })
       .catch((err) => {
         if (err.response.status === 401) {
-          alert("Id or Password is wrong!!, please try again");
+          const dialogBox = document.getElementById("dialogBox");
+          setDialogBox({
+            type: "idpsd",
+            title: "Id / Password",
+            definition: "Id or Password is wrong!!, please try again",
+            buttonTitle: "Try Again",
+          });
+          dialogBox.style.display = "block";
           setUserDetails({
             username: "",
-            password: ""
+            password: "",
           });
-        } else {
-          alert("You are not registered, Plz create your account.");
-          navigate("/signup");
+        }
+        // else if (err.response.status === 500) {
+        //   const dialogBox = document.getElementById("dialogBox");
+        //   setDialogBox({
+        //     type: "server err",
+        //     title: "Server Error",
+        //     definition: "Sorry for inconvenience🙇🙇",
+        //     buttonTitle: "Try again later",
+        //   });
+        //   dialogBox.style.display = "block";
+        //   setUserDetails({
+        //     username: "",
+        //     password: "",
+        //   });
+        // }
+        else {
+          // alert("You are not registered, Plz create your account.");
+          const dialogBox = document.getElementById("dialogBox");
+          setDialogBox({
+            type: "unregistered",
+            title: "Unregistered User",
+            definition: "You are not registered, Plz create your account.",
+            buttonTitle: "OK",
+          });
+          dialogBox.style.display = "block";
+          // navigate("/signup");
         }
       });
-
   }
 
   return (
     <div className="d-flex .flex-column vh-100 justify-content-center ">
-      <div><h1>Log In</h1></div>
-      <div className="p-5 rounded position-absolute mt-5" style={{backgroundColor: "#7AB2B2"}}>
+      <div>
+        <h1>Log In</h1>
+      </div>
+      <div
+        className="p-5 rounded position-absolute mt-5"
+        style={{ backgroundColor: "#7AB2B2" }}
+      >
         {/* <Form action="http://localhost:5000/api/login" method="POST"> */}
         {/* Uncommand the above line if want to send post request from form itself */}
-        
+
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
@@ -113,7 +149,12 @@ function Login() {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Button variant="container" className="w-100" style={customCssLI} type="submit">
+            <Button
+              variant="container"
+              className="w-100"
+              style={customCssLI}
+              type="submit"
+            >
               Login
             </Button>
           </Form.Group>
@@ -125,6 +166,12 @@ function Login() {
             </Link>
           </Form.Group>
         </Form>
+        <DialogBox
+          type={dialogBox.type}
+          title={dialogBox.title}
+          definition={dialogBox.definition}
+          buttonTitle={dialogBox.buttonTitle}
+        />
       </div>
     </div>
   );

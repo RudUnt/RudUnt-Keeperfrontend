@@ -34,7 +34,7 @@ function Home() {
         .post(url, note, { headers })
         .then(function (response) {
           // handle success
-          console.log(response.data.user);
+          // console.log(response.data.user);
           // setNotesDetailsContext(response.data.user);
           alert("Note Added Successfully !!");
         })
